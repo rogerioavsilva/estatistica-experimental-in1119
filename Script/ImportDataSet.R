@@ -1,8 +1,15 @@
-dataSet = read.csv2(file = './Data/Raw/unidades-geradoras-liberadas-operacao-comercial-detalhado.csv', header =  TRUE, encoding = "latin1")
+#install.packages("ggplot2")
 
-dataSet$DatGeracaoConjuntoDados <- as.Date(dataSet$DatGeracaoConjuntoDados,format="%Y-%m-%d")
-dataSet$DatInicioOpTesteOutorgada <- as.Date(dataSet$DatInicioOpTesteOutorgada,format="%Y-%m-%d")
-dataSet$DatLiberOpTesteRealizado <- as.Date(dataSet$DatLiberOpTesteRealizado,format="%Y-%m-%d")
-dataSet$DatUGInicioOpComerOutorgado <- as.Date(dataSet$DatUGInicioOpComerOutorgado,format="%Y-%m-%d")
-dataSet$DatLiberOpComerRealizado <- as.Date(dataSet$DatLiberOpComerRealizado,format="%Y-%m-%d")
+source("./Script/Functions/Util.R")
+library(ggplot2)
 
+df.raw = load_data()
+
+df.UFPower = df.raw[ , c("SigUFUsina", "MdaPotenciaLiberadaComercial")] 
+
+ggplot(data = df.UFPower, aes(x=SigUFUsina,y=MdaPotenciaLiberadaComercial)) + 
+  geom_boxplot()+
+  #scale_color_brewer(palette="Dark2") + 
+  #geom_jitter(shape=16, position=position_jitter(0.2))+
+  labs(title = 'Potencia instalada nos estados.',
+       y='Potencia',x='UF')
